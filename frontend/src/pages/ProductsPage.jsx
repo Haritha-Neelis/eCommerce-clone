@@ -1,8 +1,23 @@
 import { Link } from 'react-router-dom';
+import { useState } from 'react';
 import { useShop } from '../context/ShopContext';
 
 export default function ProductsPage() {
   const { products, addToCart, toggleFavorite, favorites } = useShop();
+  const [query, setQuery] = useState('');
+  const [sort, setSort] = useState('featured');
+
+  const visibleProducts = products
+    .filter((product) => {
+      const searchableText = `${product.name} ${product.category} ${product.brand}`.toLowerCase();
+      return searchableText.includes(query.toLowerCase());
+    })
+    .sort((left, right) => {
+      if (sort === 'price-low') return left.price - right.price;
+      if (sort === 'price-high') return right.price - left.price;
+      if (sort === 'rating') return right.rating - left.rating;
+      return left.id - right.id;
+    });
 
   return (
     <>
@@ -12,17 +27,22 @@ export default function ProductsPage() {
       </div>
 
       <div className="toolbar">
-        <input className="input" placeholder="Search for products" />
-        <select className="input select-inline">
-          <option>Sort by featured</option>
-          <option>Price: Low to High</option>
-          <option>Price: High to Low</option>
-          <option>Customer rating</option>
+        <label className="shop-search">
+          <span>⌕</span>
+          <input className="input" value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Search products, brands or categories" aria-label="Search products" />
+        </label>
+        <select className="input select-inline" value={sort} onChange={(event) => setSort(event.target.value)} aria-label="Sort products">
+          <option value="featured">Sort by featured</option>
+          <option value="price-low">Price: Low to High</option>
+          <option value="price-high">Price: High to Low</option>
+          <option value="rating">Customer rating</option>
         </select>
       </div>
 
-      <div className="product-grid">
-        {products.map((product) => {
+      <p className="results-count">{visibleProducts.length} products</p>
+
+      {visibleProducts.length > 0 ? <div className="product-grid">
+        {visibleProducts.map((product) => {
           const isFavorite = favorites.includes(product.id);
 
           return (
@@ -54,7 +74,7 @@ export default function ProductsPage() {
             </article>
           );
         })}
-      </div>
+      </div> : <div className="empty-state form-card"><h2>No products found</h2><p className="muted">Try a different search term or browse the full collection.</p><button className="btn btn-secondary" type="button" onClick={() => setQuery('')}>Clear search</button></div>}
     </>
   );
 }
