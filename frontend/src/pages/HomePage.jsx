@@ -1,42 +1,76 @@
+import { Link } from 'react-router-dom';
+import { useShop } from '../context/ShopContext';
+
 export default function HomePage() {
+  const { products } = useShop();
+
   const featureCards = [
     { title: 'Fast checkout', text: 'Streamlined purchase flow for modern shoppers.' },
     { title: 'Inventory insight', text: 'Track stock, pricing, and product health in one place.' },
     { title: 'Secure orders', text: 'Account-first flows with order visibility and trust.' }
   ];
 
+  const highlightedProducts = products.slice(0, 4);
+
   return (
     <>
       <section className="hero">
-        <div>
-          <p className="muted">Built for growth</p>
-          <h1>Modern commerce for every customer journey.</h1>
+        <div className="hero-copy">
+          <p className="eyebrow">THE EVERYDAY EDIT</p>
+          <h1>Make room for better finds.</h1>
           <p>
-            A complete storefront and admin platform designed around product discovery,
-            secure checkout, and operational clarity.
+            Curated essentials, new-season style, and prices that make the scroll worthwhile.
           </p>
           <div className="hero-actions">
-            <a href="/products" className="btn btn-primary">Shop now</a>
-            <a href="/register" className="btn btn-secondary">Create account</a>
+            <Link to="/products" className="btn btn-primary">Explore deals <span>→</span></Link>
+            <span className="hero-note">Free delivery on orders over ₹499</span>
           </div>
         </div>
 
         <div className="hero-panel">
-          <h2>Today’s performance</h2>
-          <p className="muted">Orders processed</p>
-          <h3 style={{ fontSize: '2.4rem', margin: '0 0 0.5rem' }}>12,486</h3>
-          <p className="muted">Conversion rate</p>
-          <h3 style={{ fontSize: '1.8rem', margin: 0 }}>4.8%</h3>
+          <span className="hero-discount">UP TO 60% OFF</span>
+          <h2>Fresh picks.<br /><em>Bright</em> prices.</h2>
+          <p>Deals worth opening your wishlist for.</p>
+          <Link to="/products" className="hero-panel-link">Shop the drop ↗</Link>
         </div>
       </section>
 
-      <section className="card-grid">
+      <section className="perks-grid">
         {featureCards.map((card) => (
-          <article key={card.title} className="card">
-            <h3>{card.title}</h3>
+          <article key={card.title} className="perk">
+            <span className="perk-icon">{card.title === 'Fast checkout' ? '↯' : card.title === 'Inventory insight' ? '◈' : '✓'}</span>
+            <div><h3>{card.title}</h3>
             <p className="muted">{card.text}</p>
+            </div>
           </article>
         ))}
+      </section>
+
+      <section className="section-block">
+        <div className="section-heading">
+          <h2>Trending this week</h2>
+          <Link to="/products" className="topbar-link">View all</Link>
+        </div>
+
+        <div className="product-grid compact-grid">
+          {highlightedProducts.map((product) => (
+            <article key={product.id} className="product-card">
+              <img src={product.image} alt={product.name} className="product-image" />
+              <div className="product-body">
+                <div className="product-meta-row">
+                  <span className="badge">{product.badge}</span>
+                  <span className="rating">★ {product.rating}</span>
+                </div>
+                <h3>{product.name}</h3>
+                <div className="price-row">
+                  <span className="price">₹{product.price.toLocaleString('en-IN')}</span>
+                  <span className="old-price">₹{product.originalPrice.toLocaleString('en-IN')}</span>
+                </div>
+                <Link to={`/products/${product.id}`} className="btn btn-secondary full-width">View details</Link>
+              </div>
+            </article>
+          ))}
+        </div>
       </section>
     </>
   );

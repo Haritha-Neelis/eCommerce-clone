@@ -1,4 +1,8 @@
+import { useShop } from '../context/ShopContext';
+
 export default function AccountPage() {
+  const { user } = useShop();
+
   return (
     <div className="form-card">
       <div className="page-header">
@@ -9,7 +13,8 @@ export default function AccountPage() {
       <div className="card-grid">
         <div className="card">
           <h3>Profile</h3>
-          <p className="muted">Jane Doe</p>
+          <p className="muted">{user.name}</p>
+          <p className="muted">{user.email}</p>
         </div>
         <div className="card">
           <h3>Addresses</h3>

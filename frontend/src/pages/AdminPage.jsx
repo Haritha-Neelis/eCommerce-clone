@@ -9,7 +9,7 @@ export default function AdminPage() {
       <div className="card-grid">
         <div className="card">
           <h3>Revenue</h3>
-          <p className="price">$84.2K</p>
+          <p className="price">₹84.2L</p>
         </div>
         <div className="card">
           <h3>Orders</h3>
