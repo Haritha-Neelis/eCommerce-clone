@@ -3,11 +3,29 @@ import { useShop } from '../context/ShopContext';
 
 export default function CheckoutPage() {
   const navigate = useNavigate();
-  const { cart, cartTotal } = useShop();
+  const { cart, cartTotal, clearCart, setLastOrder } = useShop();
+
+  if (cart.length === 0) {
+    return (
+      <div className="form-card empty-state">
+        <span className="success-icon">✓</span>
+        <h1>Nothing to checkout</h1>
+        <p className="muted">Your cart is empty. Find something you love first.</p>
+        <button className="btn btn-primary" type="button" onClick={() => navigate('/products')}>Browse products</button>
+      </div>
+    );
+  }
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    navigate('/account');
+    setLastOrder({
+      id: `CF-${Date.now().toString().slice(-6)}`,
+      total: cartTotal,
+      itemCount: cart.reduce((sum, item) => sum + item.quantity, 0),
+      date: new Date().toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })
+    });
+    clearCart();
+    navigate('/account?order=placed');
   };
 
   return (

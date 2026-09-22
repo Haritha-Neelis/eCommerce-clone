@@ -6,6 +6,7 @@ const ShopContext = createContext();
 export function ShopProvider({ children }) {
   const [cart, setCart] = useState([]);
   const [favorites, setFavorites] = useState([]);
+  const [lastOrder, setLastOrder] = useState(null);
   const [user, setUser] = useState({
     isLoggedIn: false,
     name: 'Jane Doe',
@@ -36,6 +37,8 @@ export function ShopProvider({ children }) {
     setCart((current) => current.filter((item) => item.id !== productId));
   };
 
+  const clearCart = () => setCart([]);
+
   const toggleFavorite = (productId) => {
     setFavorites((current) =>
       current.includes(productId)
@@ -52,16 +55,19 @@ export function ShopProvider({ children }) {
       products: sampleProducts,
       cart,
       favorites,
+      lastOrder,
       user,
       setUser,
       addToCart,
       updateCartQuantity,
       removeFromCart,
+      clearCart,
+      setLastOrder,
       toggleFavorite,
       cartCount,
       cartTotal
     }),
-    [cart, favorites, user, cartCount, cartTotal]
+    [cart, favorites, user, lastOrder, cartCount, cartTotal]
   );
 
   return <ShopContext.Provider value={value}>{children}</ShopContext.Provider>;
