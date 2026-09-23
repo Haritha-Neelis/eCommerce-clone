@@ -33,6 +33,9 @@
         <maven.compiler.target>25</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <spring-cloud.version>2023.0.3</spring-cloud.version>
+        <postgresql.version>42.7.12</postgresql.version>
+        <kafka.version>3.9.2</kafka.version>
+        <lombok.version>1.18.48</lombok.version>
     </properties>
 
     <dependencyManagement>
