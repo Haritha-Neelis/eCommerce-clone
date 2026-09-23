@@ -4,7 +4,7 @@ A full-stack e-commerce platform inspired by modern Indian marketplaces, built a
 
 ## Tech Stack
 
-- Java 17
+- Java 25 LTS
 - Spring Boot 3.3
 - Spring Cloud (Gateway + Eureka)
 - Spring Data JPA
